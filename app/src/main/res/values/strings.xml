@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">The Greek Goodies</string>
+    <string name="paymentOptions"><u>More payment options</u></string>
 </resources>
