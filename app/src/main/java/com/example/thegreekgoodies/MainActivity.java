@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.*;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private AsyncHttpClient client;
 
     ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8;
+    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
         iv6 = findViewById(R.id.imageView6);
         iv7 = findViewById(R.id.imageView7);
         iv8 = findViewById(R.id.imageView8);
+
+        //TextViews
+        tv1 = findViewById(R.id.textview1);
+        tv2 = findViewById(R.id.textview2);
+        tv3 = findViewById(R.id.textview3);
+        tv4 = findViewById(R.id.textview4);
+        tv5 = findViewById(R.id.textview5);
+        tv6 = findViewById(R.id.textview6);
+        tv7 = findViewById(R.id.textview7);
+        tv8 = findViewById(R.id.textview8);
 
         //Preparing list of images from drawable
         //Can get from API as well
@@ -108,6 +120,16 @@ public class MainActivity extends AppCompatActivity {
         iv.add(iv7);
         iv.add(iv8);
 
+        ArrayList<TextView> tv = new ArrayList<TextView>();
+        tv.add(tv1);
+        tv.add(tv2);
+        tv.add(tv3);
+        tv.add(tv4);
+        tv.add(tv5);
+        tv.add(tv6);
+        tv.add(tv7);
+        tv.add(tv8);
+
         for (int i = 0; i<collections.size(); i++) {
             client = new AsyncHttpClient();
             int finalI = i;
@@ -120,11 +142,13 @@ public class MainActivity extends AppCompatActivity {
 
                         String imageURL = response.getJSONObject("collection").getJSONObject("image").getString("src");
                         Picasso.with(MainActivity.this).load(imageURL).into(iv.get(finalI));
+                        tv.get(finalI).setText(response.getJSONObject("collection").getString("title"));
+
+
                     }
                     catch (JSONException e){
                         e.printStackTrace();
                     }
-
 
                 }//end onSuccess
             });

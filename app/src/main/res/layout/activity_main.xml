@@ -94,13 +94,13 @@
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal">
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView1"
                         android:layout_width="108dp"
                         android:layout_height="108dp"
-                        android:layout_weight="1"
                         android:layout_marginTop="30dp"
                         app:srcCompat="@drawable/eat_good_eat_greek"
                         android:layout_margin="10dp"
@@ -124,7 +124,8 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView2"
@@ -160,7 +161,8 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView3"
@@ -190,7 +192,8 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView4"
@@ -216,11 +219,13 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:textColor="@color/white"
+                        android:maxLines="3"
                         android:textSize="20dp"/>
 
                 </RelativeLayout>
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView5"
@@ -257,7 +262,8 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView6"
@@ -287,7 +293,8 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout android:layout_width="wrap_content"
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imageView7"
@@ -317,8 +324,9 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                <RelativeLayout android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/imageView8"
                     android:layout_width="108dp"
@@ -341,6 +349,7 @@
                     android:layout_margin="0dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_centerInParent="true"
                     android:textColor="@color/white"
                     android:textSize="20dp"/>
