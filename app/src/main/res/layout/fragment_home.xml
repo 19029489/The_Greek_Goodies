@@ -11,30 +11,33 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/etSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="10"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
-        android:inputType="textPersonName"
-        android:hint="Search our store"
-        android:fontFamily="@font/gothici"
-        android:background="@drawable/rounded"
-        android:textSize="20dp"/>
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:inputType="textPersonName"
+            android:hint="Search our store"
+            android:fontFamily="@font/gothici"
+            android:background="@drawable/rounded"
+            android:textSize="20dp"/>
 
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="4"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="@color/black" />
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="4"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/ic_baseline_search_24" />
 
     </LinearLayout>
 
