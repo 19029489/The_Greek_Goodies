@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_editMenu"
+        android:icon="@drawable/ic_baseline_menu_book_24"
+        android:title="Menu" />
+
+    <item
+        android:id="@+id/nav_orders"
+        android:icon="@drawable/ic_baseline_event_note_24"
+        android:title="Orders" />
+    <item
+        android:id="@+id/nav_riders"
+        android:icon="@drawable/ic_baseline_directions_bike_24"
+        android:title="Riders" />
+    <item
+        android:id="@+id/nav_adminAcc"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Account" />
+
+</menu>

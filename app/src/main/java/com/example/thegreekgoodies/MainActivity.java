@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,37 +14,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        DBHelperStatus dbh = new DBHelperStatus(MainActivity.this);
+        String status = dbh.getStatus();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+        if (status.equalsIgnoreCase("false")) {
+            //guest
+            Fragment userFrag = new UserFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame_main, userFrag)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            String role = dbh.getRole();
 
-        
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-            switch(item.getItemId()) {
-                case R.id.nav_home:
-                    selectedFragment = new HomeFragment();
-                    break;
-                case R.id.nav_catalog:
-                    selectedFragment = new CatalogFragment();
-                    break;
-                case R.id.nav_cart:
-                    selectedFragment = new CartFragment();
-                    break;
-                case R.id.nav_account:
-                    selectedFragment = new AccountFragment();
-                    break;
+            if (role.equalsIgnoreCase("user")) {
+                //user
+                Fragment userFrag = new UserFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame_main, userFrag)
+                        .addToBackStack(null)
+                        .commit();
+            } else if (role.equalsIgnoreCase("admin")) {
+                //admin
+                Fragment userFrag = new UserFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame_main, userFrag)
+                        .addToBackStack(null)
+                        .commit();
+            } else {
+                //rider
+                Fragment userFrag = new UserFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame_main, userFrag)
+                        .addToBackStack(null)
+                        .commit();
             }
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, selectedFragment).commit();
-
-            return true;
         }
-    };
+    }
 
 }
