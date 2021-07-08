@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new CartFragment();
                     break;
                 case R.id.nav_account:
-                    selectedFragment = new ProfileFragment();
+                    selectedFragment = new AccountFragment();
                     break;
             }
 
