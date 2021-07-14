@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProductsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class ProductsFragment extends Fragment {
+
+    private AsyncHttpClient client;
+    String collection, product_type;
 
     TextView tvDesc, tvCat;
     Context context;
@@ -75,6 +88,39 @@ public class ProductsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_products, container, false);
+
+        tvCat = v.findViewById(R.id.tvCategory);
+        tvDesc = v.findViewById(R.id.tvDescription);
+
+        if (getArguments() != null) {
+            collection = getArguments().getString("collection_id");
+            product_type = getArguments().getString("product_type");
+
+            client = new AsyncHttpClient();
+            client.get("https://d10489d24d3e88405b3f523453ff2dca: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@superfoursixty-co.myshopify.com/admin/api/2021-04/collections/" + collection + ".json", new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                    try {
+                        Log.i("JSON Results: ", response.toString());
+
+                        String cat = response.getJSONObject("collection").getString("title");
+                        tvCat.setText(cat);
+                        if (response.getJSONObject("collection").has("body_html")) {
+
+                            String desc = response.getJSONObject("collection").optString("body_html");
+                            tvDesc.setText(desc);
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }//end onSuccess
+            });
+
+        }
 
 //        linearLayout = v.findViewById(R.id.linearLayout);
 //        CreateCardViewProgrammatically();
