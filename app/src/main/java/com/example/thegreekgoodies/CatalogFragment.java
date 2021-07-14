@@ -152,7 +152,36 @@ public class CatalogFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                }//end onSuccess
+             }//end onSuccess
+            });
+        }
+
+        ArrayList<String> categories = new ArrayList<String>();
+        categories.add("Olives");
+        categories.add("Chips");
+        categories.add("Soda");
+        categories.add("Rice Cakes");
+        categories.add("Cheese");
+        categories.add("Olive Oil");
+        categories.add("Yogurt");
+        categories.add("Pastry");
+
+        for (int o = 0; o < iv.size(); o++) {
+            int finalO = o;
+            iv.get(o).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment productsFrag = new ProductsFragment();
+                    Bundle args = new Bundle();
+                    args.putString("product_type", categories.get(finalO));
+                    args.putString("collection_id", collections.get(finalO));
+                    productsFrag.setArguments(args);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, productsFrag)
+                            .addToBackStack(null)
+                            .commit();
+                }
             });
         }
 
