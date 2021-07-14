@@ -17,8 +17,6 @@ import android.widget.TextView;
  */
 public class AccountFragment extends Fragment {
 
-    TextView tvSignUp;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,19 +63,42 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
-        tvSignUp = v.findViewById(R.id.tvSignUp);
+        DBHelperStatus dbh = new DBHelperStatus(getActivity());
+        String status = dbh.getStatus();
 
-        tvSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment signUpFrag= new SignUpFragment();
+        if (status.equalsIgnoreCase("false")) {
+            //guest
+            Fragment signInFrag = new SignInFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, signInFrag)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            String role = dbh.getRole();
+
+            if (role.equalsIgnoreCase("user")) {
+                //user
+                Fragment profileFrag = new ProfileFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, signUpFrag)
+                        .replace(R.id.content_frame, profileFrag)
+                        .addToBackStack(null)
+                        .commit();
+            } else if (role.equalsIgnoreCase("admin")) {
+                //admin
+                Fragment adminAccFrag = new AdminAccFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, adminAccFrag)
+                        .addToBackStack(null)
+                        .commit();
+            } else {
+                //rider
+                Fragment riderAccFrag = new RiderAccFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, riderAccFrag)
                         .addToBackStack(null)
                         .commit();
             }
-        });
-
+        }
         return v;
     }
 }

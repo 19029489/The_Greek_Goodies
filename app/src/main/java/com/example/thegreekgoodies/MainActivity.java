@@ -36,16 +36,16 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             } else if (role.equalsIgnoreCase("admin")) {
                 //admin
-                Fragment userFrag = new UserFragment();
+                Fragment adminFrag = new AdminFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame_main, userFrag)
+                        .replace(R.id.content_frame_main, adminFrag)
                         .addToBackStack(null)
                         .commit();
             } else {
                 //rider
-                Fragment userFrag = new UserFragment();
+                Fragment riderFrag = new RiderFragment();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame_main, userFrag)
+                        .replace(R.id.content_frame_main, riderFrag)
                         .addToBackStack(null)
                         .commit();
             }

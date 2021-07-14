@@ -201,6 +201,18 @@ public class HomeFragment extends Fragment {
             });
         }
 
+        ArrayList<String> categories = new ArrayList<String>();
+        collections.add("Olives");
+        collections.add("Chips");
+        collections.add("Soda");
+        collections.add("Rice Cakes");
+        collections.add("Cheese");
+        collections.add("Olive Oil");
+        collections.add("Yogurt");
+        collections.add("Pastry");
+
+
+
         return v;
     }
 

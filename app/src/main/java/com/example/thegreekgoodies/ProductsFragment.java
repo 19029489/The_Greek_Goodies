@@ -1,12 +1,18 @@
 package com.example.thegreekgoodies;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -17,6 +23,12 @@ import android.widget.TextView;
 public class ProductsFragment extends Fragment {
 
     TextView tvDesc, tvCat;
+    Context context;
+    CardView cardview;
+    LinearLayout.LayoutParams layoutparams;
+    TextView textview;
+    ImageView iv;
+    LinearLayout linearLayout;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,8 +76,37 @@ public class ProductsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_products, container, false);
 
-        //cardview = new CardView(context); layoutparams = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT ); cardview.setLayoutParams(layoutparams); cardview.setRadius(15); cardview.setPadding(25, 25, 25, 25); cardview.setCardBackgroundColor(Color.MAGENTA); cardview.setMaxCardElevation(30); cardview.setMaxCardElevation(6); textview = new TextView(context); textview.setLayoutParams(layoutparams); textview.setText("CardView Programmatically"); textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25); textview.setTextColor(Color.WHITE); textview.setPadding(25,25,25,25); textview.setGravity(Gravity.CENTER); cardview.addView(textview); relativeLayout.addView(cardview);
+//        linearLayout = v.findViewById(R.id.linearLayout);
+//        CreateCardViewProgrammatically();
+
+
+        //Enter code here Raphael
+
 
         return v;
     }
+
+//    public void CreateCardViewProgrammatically() {
+//        cardview = new CardView(context);
+//        layoutparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        cardview.setLayoutParams(layoutparams);
+//        cardview.setRadius(15);
+//        cardview.setPadding(25, 25, 25, 25);
+//        cardview.setMaxCardElevation(30);
+//        cardview.setMaxCardElevation(6);
+//
+//        iv = new ImageView(context);
+//        textview.setLayoutParams(layoutparams);
+//
+//
+//        textview = new TextView(context);
+//        textview.setLayoutParams(layoutparams);
+//        textview.setText("CardView Programmatically");
+////        textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+//        textview.setTextColor(Color.BLACK);
+//        textview.setPadding(25, 25, 25, 25);
+//        textview.setGravity(Gravity.CENTER);
+//        cardview.addView(textview);
+//        linearLayout.addView(cardview);
+//    }
 }
