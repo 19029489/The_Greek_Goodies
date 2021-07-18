@@ -38,7 +38,7 @@
             </LinearLayout>
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/etNewFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -49,10 +49,11 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/rounded_edit_text"
-                android:hint="Full Name" />
+                android:onClick="@drawable/rounded_edit_text"
+                android:hint="First Name" />
 
             <EditText
-                android:id="@+id/editTextPhone"
+                android:id="@+id/etNewLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gothici"
@@ -61,12 +62,13 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/rounded_edit_text"
+                android:onClick="@drawable/rounded_edit_text"
                 android:ems="10"
-                android:inputType="phone"
-                android:hint="Phone Number"/>
+                android:inputType="textPersonName"
+                android:hint="Last Name"/>
 
             <EditText
-                android:id="@+id/editTextTextEmailAddress"
+                android:id="@+id/etNewEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
@@ -76,25 +78,27 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/rounded_edit_text"
+                android:onClick="@drawable/rounded_edit_text"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/etNewPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:fontFamily="@font/gothici"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginTop="50dp"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/rounded_edit_text"
+                android:onClick="@drawable/rounded_edit_text"
                 android:ems="10"
+                android:fontFamily="@font/gothici"
+                android:hint="Password"
                 android:inputType="textPassword" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnCreate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -114,7 +118,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Already have an account? " />

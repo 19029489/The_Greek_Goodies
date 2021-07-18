@@ -1,13 +1,27 @@
 package com.example.thegreekgoodies;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,7 +30,11 @@ import android.widget.TextView;
  */
 public class SignInFragment extends Fragment {
 
-    TextView tvSignUp;
+    TextView tvSignUp, tvForgot;
+    EditText etEmail, etPassword;
+    Button btnSignIn;
+
+    private AsyncHttpClient client;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,10 +79,26 @@ public class SignInFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
         tvSignUp = v.findViewById(R.id.tvSignUp);
+        tvForgot = v.findViewById(R.id.tvForgot);
+
+        etEmail = v.findViewById(R.id.etEmail);
+        etPassword = v.findViewById(R.id.etPassword);
+
+        btnSignIn = v.findViewById(R.id.btnSignIn);
+
+        client = new AsyncHttpClient();
+
+        tvForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Send email to change password (random generated code)
+                //Future Addition
+            }
+        });
 
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +112,70 @@ public class SignInFragment extends Fragment {
             }
         });
 
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                if (username.equalsIgnoreCase("")) {
+                    Toast.makeText(getActivity(), "Please enter email.", Toast.LENGTH_LONG).show();
+
+                } else if (password.equalsIgnoreCase("")) {
+                    Toast.makeText(getActivity(), "Please enter password.", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Login(v);
+                }
+            }
+        });
+
         return v;
+    }
+
+    private void Login(View v) {
+
+        RequestParams params = new RequestParams();
+        params.add("email", etEmail.getText().toString());
+        params.add("password", etPassword.getText().toString());
+
+        //for real devices, use the current location's ip address
+        client.post("http://10.0.2.2/TheGreekGoodies/doLogin.php", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                try {
+                    Log.i("JSON Results: ", response.toString());
+
+                    Boolean authenticated = response.getBoolean("authenticated");
+
+                    if (authenticated == true) {
+                        String apikey = response.getString("apikey");
+                        String role = response.getString("role");
+                        String userId = response.getString("user_id");
+
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("role", role);
+                        editor.putString("apikey", apikey);
+                        editor.putString("userId", userId);
+                        editor.commit();
+
+                        Intent i = new Intent(getActivity(), MainActivity.class);
+                        startActivity(i);
+
+                    } else {
+                        Toast.makeText(getActivity(), "Wrong username or password", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+            }//end onSuccess
+        });
+
     }
 }

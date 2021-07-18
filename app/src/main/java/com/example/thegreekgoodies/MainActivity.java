@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,10 +16,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DBHelperStatus dbh = new DBHelperStatus(MainActivity.this);
-        String status = dbh.getStatus();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String role = prefs.getString("role", "");
+        String apikey = prefs.getString("apikey", "");
+        String userId = prefs.getString("userId", "");
 
-        if (status.equalsIgnoreCase("false")) {
+        if (role.equalsIgnoreCase("") || apikey.equalsIgnoreCase("") || userId.equalsIgnoreCase("")) {
             //guest
             Fragment userFrag = new UserFragment();
             getSupportFragmentManager().beginTransaction()
@@ -25,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
                     .addToBackStack(null)
                     .commit();
         } else {
-            String role = dbh.getRole();
-
             if (role.equalsIgnoreCase("user")) {
                 //user
                 Fragment userFrag = new UserFragment();

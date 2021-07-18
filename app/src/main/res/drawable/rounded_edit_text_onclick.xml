@@ -4,6 +4,9 @@
     <!-- Background Color -->
     <solid android:color="#eaeaea" />
 
+    <!-- Border Color -->
+    <stroke android:width="2dp" android:color="@color/black" />
+
     <!-- Round Corners -->
     <corners android:radius="5dp" />
 

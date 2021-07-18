@@ -1,13 +1,29 @@
 package com.example.thegreekgoodies;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +33,10 @@ import android.widget.TextView;
 public class SignUpFragment extends Fragment {
 
     TextView tvSignIn;
+    EditText etFirstName, etLastName, etEmail, etPassword;
+    Button btnCreate;
+
+    private AsyncHttpClient client;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,6 +86,14 @@ public class SignUpFragment extends Fragment {
 
         tvSignIn = v.findViewById(R.id.tvSignIn);
 
+        etEmail = v.findViewById(R.id.etNewEmail);
+        etFirstName = v.findViewById(R.id.etNewFirstName);
+        etLastName = v.findViewById(R.id.etNewLastName);
+        etPassword = v.findViewById(R.id.etNewPassword);
+        btnCreate = v.findViewById(R.id.btnCreate);
+
+        client = new AsyncHttpClient();
+
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +105,69 @@ public class SignUpFragment extends Fragment {
             }
         });
 
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String firstname = etFirstName.getText().toString();
+                String email = etEmail.getText().toString();
+                String lastname = etLastName.getText().toString();
+                String password = etPassword.getText().toString();
+
+                //validation
+                if (password.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || email.isEmpty()) {
+                    Toast.makeText(getActivity(), "Please fill in all the blanks", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Check email
+                    if (!(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+                        etEmail.setError("Please input a valid email e.g. xxx@xyz.com");
+
+                        //check password
+                    } else if (password.length() < 8){
+                        etPassword.setError("Password must be at least 8 characters long");
+
+                    } else {
+                        Create(v);
+                    }
+
+                }
+            }
+        });
+
         return v;
     }
+
+    private void Create(View v) {
+
+        String firstname = etFirstName.getText().toString();
+        String email = etEmail.getText().toString();
+        String lastname = etLastName.getText().toString();
+        String password = etPassword.getText().toString();
+
+        RequestParams params = new RequestParams();
+        params.add("email", email);
+        params.add("firstname", firstname);
+        params.add("lastname", lastname);
+        params.add("password", password);
+
+        //for real devices, use the current location's ip address
+        client.post("http://10.0.2.2/TheGreekGoodies/createUserAccount.php", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                Toast.makeText(getActivity(), "Account created successfully", Toast.LENGTH_LONG).show();
+
+                Fragment signInFragment = new AccountFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, signInFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+            }//end onSuccess
+        });
+
+    }
+
+
 }

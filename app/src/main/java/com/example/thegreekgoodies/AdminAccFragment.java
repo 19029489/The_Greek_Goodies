@@ -1,12 +1,17 @@
 package com.example.thegreekgoodies;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +19,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AdminAccFragment extends Fragment {
+
+    Button btnLogOut;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +66,41 @@ public class AdminAccFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_acc, container, false);
+        View v = inflater.inflate(R.layout.fragment_admin_acc, container, false);
+
+        btnLogOut = v.findViewById(R.id.btnLogOutAdmin);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String role = prefs.getString("role", "");
+        String apikey = prefs.getString("apikey", "");
+        String userId = prefs.getString("userId", "");
+
+        if (role.equalsIgnoreCase("") || apikey.equalsIgnoreCase("") || userId.equalsIgnoreCase("")) {
+            //guest
+            Fragment signInFrag = new SignInFragment();
+            Fragment userFrag = new UserFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, signInFrag)
+                    .replace(R.id.content_frame_main,userFrag)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.commit();
+
+                Toast.makeText(getActivity(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+            }
+        });
+
+        return v;
     }
 }

@@ -1,10 +1,12 @@
 package com.example.thegreekgoodies;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +65,12 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
-        DBHelperStatus dbh = new DBHelperStatus(getActivity());
-        String status = dbh.getStatus();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String role = prefs.getString("role", "");
+        String apikey = prefs.getString("apikey", "");
+        String userId = prefs.getString("userId", "");
 
-        if (status.equalsIgnoreCase("false")) {
+        if (role.equalsIgnoreCase("") || apikey.equalsIgnoreCase("") || userId.equalsIgnoreCase("")) {
             //guest
             Fragment signInFrag = new SignInFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
@@ -74,8 +78,6 @@ public class AccountFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         } else {
-            String role = dbh.getRole();
-
             if (role.equalsIgnoreCase("user")) {
                 //user
                 Fragment profileFrag = new ProfileFragment();
