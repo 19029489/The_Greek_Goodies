@@ -1,13 +1,9 @@
 package com.example.thegreekgoodies;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
-import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -22,8 +18,11 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,11 +122,47 @@ public class SignUpFragment extends Fragment {
                         etEmail.setError("Please input a valid email e.g. xxx@xyz.com");
 
                         //check password
-                    } else if (password.length() < 8){
+                    } else if (password.length() < 8) {
                         etPassword.setError("Password must be at least 8 characters long");
 
                     } else {
-                        Create(v);
+
+                        //check for duplicate emails
+                        client.post("http://10.0.2.2/TheGreekGoodies/getAllEmails.php", new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                                Boolean isDuplicate = false;
+
+                                try {
+
+                                    Log.i("JSON Results: ", response.toString());
+
+                                    for (int i = 0; i < response.length(); i++) {
+
+                                        JSONObject jsonObj = response.getJSONObject(i);
+
+                                        String storedEmail = jsonObj.getString("email");
+
+                                        if (email.equalsIgnoreCase(storedEmail) == true) {
+                                            isDuplicate = true;
+                                        }
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (isDuplicate == true){
+                                    etEmail.setError("Email already exists, if you forgot your password, please reset it");
+                                } else {
+                                    Create(v);
+                                }
+
+                            }//end onSuccess
+
+                        });
+
                     }
 
                 }
@@ -136,6 +171,7 @@ public class SignUpFragment extends Fragment {
 
         return v;
     }
+
 
     private void Create(View v) {
 

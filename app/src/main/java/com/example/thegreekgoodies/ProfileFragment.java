@@ -7,11 +7,21 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +31,9 @@ import android.widget.Toast;
 public class ProfileFragment extends Fragment {
 
     Button btnLogOut;
+    TextView tvOrderHistory, tvAddress, tvViewAddresses;
+
+    private AsyncHttpClient client;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +95,45 @@ public class ProfileFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         }
+
+        btnLogOut = v.findViewById(R.id.btnLogOutUser);
+        tvAddress = v.findViewById(R.id.tvAddress);
+        tvViewAddresses = v.findViewById(R.id.tvViewAddresses);
+
+        client = new AsyncHttpClient();
+
+        //Getting addresses
+        RequestParams params = new RequestParams();
+        params.add("user_id", userId);
+        params.add("apikey", apikey);
+
+        //for real devices, use the current location's ip address
+        client.post("http://10.0.2.2/TheGreekGoodies/getAddressesById.php", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
+
+                try {
+                    Log.i("JSON Results: ", response.toString());
+
+                    if (response.length() == 0) {
+
+                    } else {
+                        for (int i = 0; i < response.length(); i++) {
+
+                            JSONObject jsonObj = response.getJSONObject(i);
+
+//                            String itemId = jsonObj.getString("menu_item_category_id");
+//                            String description = jsonObj.getString("menu_item_category_description");
+                        }
+                    }
+
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+            }//end onSuccess
+        });
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override

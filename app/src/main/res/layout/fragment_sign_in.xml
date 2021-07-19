@@ -36,8 +36,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/rounded_edit_text"
-        android:onClick="@drawable/rounded_edit_text"
+        android:background="@drawable/selector_edittext"
         android:ems="10"
         android:inputType="textEmailAddress" />
 
@@ -51,8 +50,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/rounded_edit_text"
-        android:onClick="@drawable/rounded_edit_text"
+        android:background="@drawable/selector_edittext"
         android:ems="10"
         android:inputType="textPassword" />
 
