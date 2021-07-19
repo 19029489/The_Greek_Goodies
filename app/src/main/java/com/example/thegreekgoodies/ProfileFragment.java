@@ -113,17 +113,37 @@ public class ProfileFragment extends Fragment {
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
 
                 try {
-                    Log.i("JSON Results: ", response.toString());
+                    Log.i("Addresses: ", response.toString());
 
                     if (response.length() == 0) {
-
+                        tvAddress.setText("You haven't added any addresses yet.");
+                        tvViewAddresses.setText("View Addresses (0)");
                     } else {
+
+                        tvViewAddresses.setText("View Addresses ("  + response.length() + ")");
+
                         for (int i = 0; i < response.length(); i++) {
 
                             JSONObject jsonObj = response.getJSONObject(i);
 
-//                            String itemId = jsonObj.getString("menu_item_category_id");
-//                            String description = jsonObj.getString("menu_item_category_description");
+                            String addressId = jsonObj.getString("address_id");
+                            String userId = jsonObj.getString("user_id");
+                            String firstname = jsonObj.getString("firstname");
+                            String lastname = jsonObj.getString("lastname");
+                            String company = jsonObj.getString("company");
+                            String address1 = jsonObj.getString("address1");
+                            String address2 = jsonObj.getString("address2");
+                            String city = jsonObj.getString("city");
+                            String country = jsonObj.getString("country");
+                            String postalcode = jsonObj.getString("postalcode");
+                            String phone = jsonObj.getString("phone");
+                            Boolean defaultaddress = jsonObj.getBoolean("defaultaddress");
+
+                            Address address = new Address(addressId, userId, firstname, lastname, company, address1, address2, city, country, postalcode, phone, defaultaddress);
+
+                            if (defaultaddress == true) {
+                                tvAddress.setText(address.toString());
+                            }
                         }
                     }
 

@@ -136,7 +136,7 @@ public class SignUpFragment extends Fragment {
 
                                 try {
 
-                                    Log.i("JSON Results: ", response.toString());
+                                    Log.i("Emails: ", response.toString());
 
                                     for (int i = 0; i < response.length(); i++) {
 

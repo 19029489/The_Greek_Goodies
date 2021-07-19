@@ -186,7 +186,7 @@ public class HomeFragment extends Fragment {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                     try {
-                        Log.i("JSON Results: ", response.toString());
+                        Log.i("Collection: ", response.toString());
 
                         String imageURL = response.getJSONObject("collection").getJSONObject("image").getString("src");
                         Picasso.with(getActivity()).load(imageURL).into(iv.get(finalI));

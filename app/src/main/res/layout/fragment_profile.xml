@@ -37,20 +37,22 @@
         android:orientation="horizontal"/>
 
     <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="ORDER HISTORY"
-    android:layout_marginLeft="20dp"
-    android:textSize="25dp"
-    android:layout_marginTop="20dp"
-    android:textColor="@color/black"
-    android:fontFamily="@font/gothicb"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ORDER HISTORY"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="25dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/gothicb"/>
 
     <TextView
         android:id="@+id/tvOrderHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:textSize="15dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/gothic" />
@@ -60,6 +62,7 @@
         android:layout_height="wrap_content"
         android:text="ACCOUNT DETAILS"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:textSize="25dp"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
@@ -70,6 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:textSize="15dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/gothic"/>
@@ -79,10 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:textSize="15dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/gothic"
-        android:textColor="#a56800"
-        android:text="View Addresses(0)"/>
+        android:textColor="#a56800"/>
 
 </LinearLayout>

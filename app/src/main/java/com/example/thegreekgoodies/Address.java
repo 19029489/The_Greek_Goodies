@@ -1,22 +1,22 @@
 package com.example.thegreekgoodies;
 
 import java.io.Serializable;
-import java.util.Optional;
 
 public class Address implements Serializable {
     private String addressId;
     private String userId;
-    private Optional<String>  firstname;
-    private Optional<String>  lastname;
-    private Optional<String> company;
+    private String firstname;
+    private String lastname;
+    private String company;
     private String address1;
-    private Optional<String> address2;
+    private String address2;
     private String city;
     private String country;
     private String postalCode;
-    private Optional<String> phone;
+    private String phone;
+    private Boolean defaultAddress;
 
-    public Address(String addressId, String userId, Optional<String> firstname, Optional<String> lastname, Optional<String> company, String address1, Optional<String> address2, String city, String country, String postalCode, Optional<String> phone) {
+    public Address(String addressId, String userId, String firstname, String lastname, String company, String address1, String address2, String city, String country, String postalCode, String phone, Boolean defaultAddress) {
         this.addressId = addressId;
         this.userId = userId;
         this.firstname = firstname;
@@ -28,35 +28,46 @@ public class Address implements Serializable {
         this.country = country;
         this.postalCode = postalCode;
         this.phone = phone;
+        this.defaultAddress = defaultAddress;
     }
 
     public String getAddressId() {
         return addressId;
     }
+
     public String getUserId() {
         return userId;
     }
-    public Optional<String> getFirstname() {
+
+    public Boolean getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(Boolean defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
+
+    public String getFirstname() {
         return firstname;
     }
 
-    public void setFirstname(Optional<String> firstname) {
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public Optional<String> getLastname() {
+    public String getLastname() {
         return lastname;
     }
 
-    public void setLastname(Optional<String> lastname) {
+    public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public Optional<String> getCompany() {
+    public String getCompany() {
         return company;
     }
 
-    public void setCompany(Optional<String> company) {
+    public void setCompany(String company) {
         this.company = company;
     }
 
@@ -68,11 +79,11 @@ public class Address implements Serializable {
         this.address1 = address1;
     }
 
-    public Optional<String> getAddress2() {
+    public String getAddress2() {
         return address2;
     }
 
-    public void setAddress2(Optional<String> address2) {
+    public void setAddress2(String address2) {
         this.address2 = address2;
     }
 
@@ -100,11 +111,11 @@ public class Address implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public Optional<String> getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Optional<String> phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

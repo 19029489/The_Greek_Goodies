@@ -146,7 +146,7 @@ public class SignInFragment extends Fragment {
                 super.onSuccess(statusCode, headers, response);
 
                 try {
-                    Log.i("JSON Results: ", response.toString());
+                    Log.i("doLogin Results: ", response.toString());
 
                     Boolean authenticated = response.getBoolean("authenticated");
 
