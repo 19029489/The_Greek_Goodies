@@ -88,6 +88,8 @@ public class Checkout extends Fragment {
                 //CheckEntire
                 //PassDB
                 //NextPage
+                //Payment
+                //if success transfer to actual db
             }
         });
         //----------------------ContinueButton----------------------
