@@ -10,14 +10,12 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class DBCusOrderTemp extends SQLiteOpenHelper {
-
     //--------------------Setup---------------------
     private static final String DATABASE_NAME = "customerorder.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_LIST = "orderlist";
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_PNAME = "productname";
-    private static final String COLUMN_CNAME = "cusname";
     private static final String COLUMN_QUANTITY = "quantity";
     private static final String COLUMN_PRICE = "price";
     //--------------------Setup---------------------
@@ -31,7 +29,6 @@ public class DBCusOrderTemp extends SQLiteOpenHelper {
         String createItemTableSql = "CREATE TABLE " + TABLE_LIST + "("
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_PNAME + " TEXT,"
-                + COLUMN_CNAME + " TEXT, "
                 + COLUMN_QUANTITY + " INTEGER, "
                 + COLUMN_PRICE + " FLOAT )";
 
@@ -46,11 +43,10 @@ public class DBCusOrderTemp extends SQLiteOpenHelper {
     }
 
     //--------------------------Insert----------------------
-    public long insertCustomer(String pname, String cname, int quantity, double price) {
+    public long insertCustomer(String pname, int quantity, double price) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_PNAME, pname);
-        values.put(COLUMN_CNAME, cname);
         values.put(COLUMN_QUANTITY, quantity);
         values.put(COLUMN_PRICE, price);
         long result = db.insert(TABLE_LIST, null, values);
@@ -65,7 +61,7 @@ public class DBCusOrderTemp extends SQLiteOpenHelper {
         ArrayList<CustomerOrder> customer = new ArrayList<CustomerOrder>();
 
         String selectQuery = "SELECT " + COLUMN_ID + ","
-                + COLUMN_PNAME + ","+COLUMN_CNAME+ ","+COLUMN_QUANTITY+ ","+COLUMN_PRICE  + " FROM " + TABLE_LIST;
+                + COLUMN_PNAME + ","+COLUMN_QUANTITY+ ","+COLUMN_PRICE  + " FROM " + TABLE_LIST;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -73,10 +69,9 @@ public class DBCusOrderTemp extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(0);
                 String pname = cursor.getString(1);
-                String cname = cursor.getString(2);
-                int quantity = cursor.getInt(3);
-                double price = cursor.getDouble(4);
-                CustomerOrder newCus = new CustomerOrder(id, pname, cname, quantity, price);
+                int quantity = cursor.getInt(2);
+                double price = cursor.getDouble(3);
+                CustomerOrder newCus = new CustomerOrder(id, pname, quantity, price);
                 customer.add(newCus);
             } while (cursor.moveToNext());
         }
@@ -98,4 +93,6 @@ public class DBCusOrderTemp extends SQLiteOpenHelper {
         return result;
     }
     //-----------------Delete--------------
+
+
 }

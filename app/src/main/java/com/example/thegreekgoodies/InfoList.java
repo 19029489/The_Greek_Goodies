@@ -97,16 +97,15 @@ public class InfoList extends Fragment {
                 //------------------AddCusDataBase-------------------
                 //------------------DataToBeAdded--------------------
                 String pname = itemName.getText().toString();
-                String cname = "EmptyUserName";
                 int quantity = Integer.parseInt(quantityNumber.getText().toString());
                 double price = Double.parseDouble(itemPrice.getText().toString());
                 //------------------DataToBeAdded--------------------
                 if (quantity >= 1) {
                     DBCusOrderTemp dbc = new DBCusOrderTemp(getActivity());
-                    long inserted_id = dbc.insertCustomer(pname, cname, quantity, price);
+                    long inserted_id = dbc.insertCustomer(pname, quantity, price);
                     dbc.close();
                     //------------------AddCusDataBase-------------------
-                    Intent intent = new Intent(getActivity(), CartFragment.class);
+                    Intent intent = new Intent(getActivity(), Summarylist.class);
                     startActivity(intent);
                     if (inserted_id != -1) {
                         Toast.makeText(getActivity(), "Success adding to Cart",
