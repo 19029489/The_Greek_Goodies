@@ -139,12 +139,6 @@ public class ProductsFragment extends Fragment {
 
         }
 
-//        linearLayout = v.findViewById(R.id.linearLayout);
-//        CreateCardViewProgrammatically();
-
-
-
-
         //=====================ImplementationRaph========================
         //=================SetupUI/ETC=====================
         client = new AsyncHttpClient();
@@ -159,7 +153,7 @@ public class ProductsFragment extends Fragment {
         RequestParams params = new RequestParams();
         params.add("categoryId", catID);
         //==================SharedPref==================
-        //=================StupidListView=====================
+        //=================ListView=====================
         client.post("http://10.0.2.2/greek_goodies/getProductInfo.php", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
@@ -202,27 +196,4 @@ public class ProductsFragment extends Fragment {
         return v;
     }
 
-//    public void CreateCardViewProgrammatically() {
-//        cardview = new CardView(context);
-//        layoutparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        cardview.setLayoutParams(layoutparams);
-//        cardview.setRadius(15);
-//        cardview.setPadding(25, 25, 25, 25);
-//        cardview.setMaxCardElevation(30);
-//        cardview.setMaxCardElevation(6);
-//
-//        iv = new ImageView(context);
-//        textview.setLayoutParams(layoutparams);
-//
-//
-//        textview = new TextView(context);
-//        textview.setLayoutParams(layoutparams);
-//        textview.setText("CardView Programmatically");
-////        textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
-//        textview.setTextColor(Color.BLACK);
-//        textview.setPadding(25, 25, 25, 25);
-//        textview.setGravity(Gravity.CENTER);
-//        cardview.addView(textview);
-//        linearLayout.addView(cardview);
-//    }
 }
