@@ -14,9 +14,9 @@ public class Address implements Serializable {
     private String country;
     private String postalCode;
     private String phone;
-    private Boolean defaultAddress;
+    private Integer defaultAddress;
 
-    public Address(String addressId, String userId, String firstname, String lastname, String company, String address1, String address2, String city, String country, String postalCode, String phone, Boolean defaultAddress) {
+    public Address(String addressId, String userId, String firstname, String lastname, String company, String address1, String address2, String city, String country, String postalCode, String phone, Integer defaultAddress) {
         this.addressId = addressId;
         this.userId = userId;
         this.firstname = firstname;
@@ -39,11 +39,11 @@ public class Address implements Serializable {
         return userId;
     }
 
-    public Boolean getDefaultAddress() {
+    public Integer getDefaultAddress() {
         return defaultAddress;
     }
 
-    public void setDefaultAddress(Boolean defaultAddress) {
+    public void setDefaultAddress(Integer defaultAddress) {
         this.defaultAddress = defaultAddress;
     }
 
@@ -121,11 +121,19 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
-        return firstname + " " + lastname + "\n" +
-                company + "\n" +
-                address1 + "\n" +
-                address2 + "\n" +
-                city + " " + postalCode + "\n" +
-                country;
+        if (company.equalsIgnoreCase("null") || company.equalsIgnoreCase("")){
+            return firstname + " " + lastname + "\n" +
+                    address1 + "\n" +
+                    address2 + "\n" +
+                    city + " " + postalCode + "\n" +
+                    country + "\n";
+        } else {
+            return firstname + " " + lastname + "\n" +
+                    company + "\n" +
+                    address1 + "\n" +
+                    address2 + "\n" +
+                    city + " " + postalCode + "\n" +
+                    country + "\n";
+        }
     }
 }

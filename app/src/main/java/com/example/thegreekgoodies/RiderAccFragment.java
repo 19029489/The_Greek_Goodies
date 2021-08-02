@@ -83,6 +83,8 @@ public class RiderAccFragment extends Fragment {
                     .commit();
         }
 
+        btnLogOut = v.findViewById(R.id.btnLogOutRider);
+
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,11 +2,15 @@ package com.example.thegreekgoodies;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +63,38 @@ public class RiderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rider, container, false);
+        View v = inflater.inflate(R.layout.fragment_rider, container, false);
+
+        BottomNavigationView bottomNav = v.findViewById(R.id.bottom_navigation_rider);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new ViewOrdersFragment()).commit();
+
+        return v;
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment selectedFragment = null;
+            switch(item.getItemId()) {
+                case R.id.nav_orderRequests:
+                    selectedFragment = new ViewOrdersFragment();
+                    break;
+                case R.id.nav_history:
+                    selectedFragment = new AdminHistoryFragment();
+                    break;
+                case R.id.nav_help:
+                    selectedFragment = new AdminHelpFragment();
+                    break;
+                case R.id.nav_riderAcc:
+                    selectedFragment = new RiderAccFragment();
+                    break;
+            }
+
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, selectedFragment).commit();
+
+            return true;
+        }
+    };
 }

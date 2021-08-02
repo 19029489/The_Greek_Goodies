@@ -1,9 +1,9 @@
 package com.example.thegreekgoodies;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -24,17 +26,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
+ * Use the {@link ViewAddressesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ViewAddressesFragment extends Fragment {
 
-    Button btnLogOut;
-    TextView tvOrderHistory, tvAddress, tvViewAddresses;
+    Button btnAdd;
+    TextView tvBack;
     private ArrayList<Address> al;
+    private ArrayAdapter aa;
+    private ListView lv;
     private AsyncHttpClient client;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -46,7 +53,7 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ProfileFragment() {
+    public ViewAddressesFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +63,11 @@ public class ProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
+     * @return A new instance of fragment ViewAddresses.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static ViewAddressesFragment newInstance(String param1, String param2) {
+        ViewAddressesFragment fragment = new ViewAddressesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,7 +87,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_view_addresses, container, false);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String role = prefs.getString("role", "");
@@ -98,15 +106,16 @@ public class ProfileFragment extends Fragment {
                     .commit();
         }
 
-        btnLogOut = v.findViewById(R.id.btnLogOutUser);
-        tvAddress = v.findViewById(R.id.tvAddress);
-        tvViewAddresses = v.findViewById(R.id.tvViewAddresses);
-
-        al = new ArrayList<Address>();
+        btnAdd = v.findViewById(R.id.btnAddAddress);
+        tvBack = v.findViewById(R.id.backBtn);
+        lv = (ListView) v.findViewById(R.id.lvAddresses);
 
         client = new AsyncHttpClient();
 
-        //Getting addresses
+        al = new ArrayList<Address>();
+        aa = new AddressAdapter(getActivity(), R.layout.address_row, al);
+        lv.setAdapter(aa);
+
         RequestParams params = new RequestParams();
         params.add("user_id", userId);
         params.add("apikey", apikey);
@@ -117,15 +126,13 @@ public class ProfileFragment extends Fragment {
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
 
                 try {
-                    Log.i("Addresses: ", response.toString());
+                    Log.i("Addresses List: ", response.toString());
 
-                    if (response.length() == 0) {
-                        tvAddress.setText("You haven't added any addresses yet.");
-                        tvViewAddresses.setText("View Addresses (0)");
+                    al.clear();
+
+                    if (response.length() == 0){
+                        aa.notifyDataSetChanged();
                     } else {
-
-                        tvViewAddresses.setText("View Addresses ("  + response.length() + ")");
-
                         for (int i = 0; i < response.length(); i++) {
 
                             JSONObject jsonObj = response.getJSONObject(i);
@@ -151,9 +158,9 @@ public class ProfileFragment extends Fragment {
                                 al.add(address);
                             }
                         }
-
-                        tvAddress.setText(al.get(0).toString());
                     }
+
+                    aa.notifyDataSetChanged();
 
                 }
                 catch (JSONException e){
@@ -161,33 +168,56 @@ public class ProfileFragment extends Fragment {
                 }
 
             }//end onSuccess
+
         });
 
-        tvViewAddresses.setOnClickListener(new View.OnClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Address selected = al.get(position);
+
+                Fragment EditFrag = new EditAddressFragment();
+                Bundle args = new Bundle();
+                args.putString("addressId", selected.getAddressId());
+                args.putString("firstname", selected.getFirstname());
+                args.putString("lastname", selected.getLastname());
+                args.putString("company", selected.getCompany());
+                args.putString("add1", selected.getAddress1());
+                args.putString("add2", selected.getAddress2());
+                args.putString("postal", selected.getPostalCode());
+                args.putString("phone", selected.getPhone());
+                args.putInt("default", selected.getDefaultAddress());
+
+                EditFrag.setArguments(args);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, EditFrag)
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
+
+        tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment viewAddressFrag = new ViewAddressesFragment();
-                Fragment userFrag = new UserFragment();
+                Fragment profileFrag = new ProfileFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, viewAddressFrag)
+                        .replace(R.id.content_frame, profileFrag)
                         .addToBackStack(null)
                         .commit();
             }
         });
 
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.clear();
-                editor.commit();
-
-                Toast.makeText(getActivity(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
+                Fragment addFrag = new AddAddressFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, addFrag)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
