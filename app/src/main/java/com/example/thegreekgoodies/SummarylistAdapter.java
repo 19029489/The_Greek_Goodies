@@ -48,7 +48,7 @@ public class SummarylistAdapter extends ArrayAdapter<CustomerOrder> {
 
         //-------------------Setup-----------------
         tvName.setText(name);
-        tvPrice.setText("$" + price);
+        tvPrice.setText(String.format("$%.2f", price));
         tvQuantity.setText(quantity + " Packet");
         //-------------------Setup-----------------
 
@@ -62,6 +62,7 @@ public class SummarylistAdapter extends ArrayAdapter<CustomerOrder> {
                 db.close();
 
                 //Refresh List To Be Included
+
             }
         });
         //=========================RemoveButtonHandle========================
