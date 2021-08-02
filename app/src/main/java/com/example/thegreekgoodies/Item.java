@@ -8,10 +8,10 @@ public class Item implements Serializable {
     String itemName;
     String itemDetails;
     String itemPhoto;
-    int category;
+    String category;
     double itemPrice;
 
-    public Item(int _id, String itemName, String itemDetails, String itemPhoto, int category, double itemPrice) {
+    public Item(int _id, String itemName, String itemDetails, String itemPhoto, String category, double itemPrice) {
         this._id=_id;
         this.itemName = itemName;
         this.itemDetails = itemDetails;
@@ -36,7 +36,7 @@ public class Item implements Serializable {
         return itemPhoto;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 

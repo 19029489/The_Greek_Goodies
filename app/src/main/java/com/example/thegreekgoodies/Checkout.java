@@ -71,13 +71,13 @@ public class Checkout extends Fragment {
 
 
         //----------------------LoginTVTextHandle----------------------
-        tvBtnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Checkout.this, Login.class);
-                startActivity(intent);
-            }
-        });
+//        tvBtnLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Checkout.this, Login.class);
+//                startActivity(intent);
+//            }
+//        });
         //----------------------LoginTVTextHandle----------------------
 
         //----------------------ReturnCartHandle----------------------
@@ -126,8 +126,8 @@ public class Checkout extends Fragment {
                     editor.commit();
                     //------------------------ThrowAllInEditor-------------------------------
 
-                    Intent intent = new Intent(Checkout.this, Login.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(Checkout.this, Login.class);
+//                    startActivity(intent);
                 }
 
             }
