@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ViewUsersFragment extends Fragment {
+
+    Spinner spn;
+    TextView tvSelected;
+    ListView lv;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +67,21 @@ public class ViewUsersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_users, container, false);
+        View v = inflater.inflate(R.layout.fragment_view_users, container, false);
+
+        spn = v.findViewById(R.id.spinner);
+        tvSelected = v.findViewById(R.id.tvSelected);
+        lv = v.findViewById(R.id.lvChoose);
+
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos);
+                tvSelected.setText(spn.getSelectedItem().toString());
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        return v;
     }
 }

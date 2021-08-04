@@ -3,4 +3,9 @@
     <string name="paymentOptions"><u>More payment options</u></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="users">
+        <item>Users</item>
+        <item>Riders</item>
+        <item>Admins</item>
+    </string-array>
 </resources>
