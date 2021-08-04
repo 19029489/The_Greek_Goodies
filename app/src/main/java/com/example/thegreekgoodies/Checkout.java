@@ -30,7 +30,6 @@ public class Checkout extends Fragment {
         View v = inflater.inflate(R.layout.fragment_checkout, container, false);
 
         if (getArguments() != null) {
-
             String TotalPrice = getArguments().getString("totalprice");
 
             //==================MatchingGame==========================
@@ -125,10 +124,10 @@ public class Checkout extends Fragment {
                         editor.commit();
                         //------------------------ThrowAllInEditor-------------------------------
 
-//                        Fragment LoginFrag = new SignInFragment();
+//                        Fragment signInFrag = new SignInFragment();
 //
 //                        getActivity().getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.content_frame, LoginFrag)
+//                                .replace(R.id.content_frame, signInFrag)
 //                                .addToBackStack(null)
 //                                .commit();
                     }
@@ -136,36 +135,40 @@ public class Checkout extends Fragment {
                 }
             });
             //----------------------ContinueButton----------------------
-
-
-            return v;
         }
 
+        return v;
 
-        //==========================Constructor=========================
-        private boolean checkBox () {
-            if (cbOffer.isChecked() == true) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        private boolean checkEntry() {
-            String ep = etEmailPhone.getText().toString();
-            String ln = etEmailPhone.getText().toString();
-            String ad = etEmailPhone.getText().toString();
-            String ct = etEmailPhone.getText().toString();
-            String c = etEmailPhone.getText().toString();
-            String pc = etEmailPhone.getText().toString();
-            String pn = etEmailPhone.getText().toString();
-
-            if (ep.isEmpty() || ln.isEmpty() || ad.isEmpty() || ct.isEmpty() || c.isEmpty() || pc.isEmpty() || pn.isEmpty()) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        //==========================Constructor=========================
     }
+
+
+
+    //==========================Constructor=========================
+    private boolean checkBox(){
+        if (cbOffer.isChecked() == true){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean checkEntry(){
+        String ep = etEmailPhone.getText().toString();
+        String ln = etEmailPhone.getText().toString();
+        String ad = etEmailPhone.getText().toString();
+        String ct = etEmailPhone.getText().toString();
+        String c = etEmailPhone.getText().toString();
+        String pc = etEmailPhone.getText().toString();
+        String pn = etEmailPhone.getText().toString();
+
+        if (ep.isEmpty() || ln.isEmpty() || ad.isEmpty() || ct.isEmpty() || c.isEmpty() || pc.isEmpty() || pn.isEmpty()){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    //==========================Constructor=========================
+
 }

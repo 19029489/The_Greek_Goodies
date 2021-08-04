@@ -79,9 +79,7 @@ public class AdminFragment extends Fragment {
             Fragment selectedFragment = null;
             switch(item.getItemId()) {
                 case R.id.nav_editMenu:
-
-                    //To be changed
-                    selectedFragment = new HomeFragment();
+                    selectedFragment = new CatalogFragment();
                     break;
                 case R.id.nav_orders:
                     selectedFragment = new ViewOrdersFragment();
