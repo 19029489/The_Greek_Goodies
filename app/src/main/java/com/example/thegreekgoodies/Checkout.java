@@ -125,8 +125,12 @@ public class Checkout extends Fragment {
                         editor.commit();
                         //------------------------ThrowAllInEditor-------------------------------
 
-//                    Intent intent = new Intent(Checkout.this, Login.class);
-//                    startActivity(intent);
+//                        Fragment LoginFrag = new SignInFragment();
+//
+//                        getActivity().getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.content_frame, LoginFrag)
+//                                .addToBackStack(null)
+//                                .commit();
                     }
 
                 }
