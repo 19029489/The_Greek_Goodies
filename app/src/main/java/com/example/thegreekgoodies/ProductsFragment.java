@@ -186,10 +186,46 @@ public class ProductsFragment extends Fragment {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long identity) {
+
                     Item target = list.get(position);
-                    Intent i = new Intent(getActivity(), InfoList.class);
-                    i.putExtra("positionData", target);
-                    startActivity(i);
+
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    String role = prefs.getString("role", "");
+                    String apikey = prefs.getString("apikey", "");
+                    String userId = prefs.getString("userId", "");
+
+                    if (!(role.equalsIgnoreCase("") || apikey.equalsIgnoreCase("") || userId.equalsIgnoreCase(""))) {
+                        if (role.equalsIgnoreCase("admin")) {
+                            Fragment infoListFrag = new InfoList();
+                            Bundle args = new Bundle();
+                            args.putString("itemName", target.itemName);
+                            args.putString("itemDetails", target.itemDetails);
+                            args.putString("itemPhoto", target.itemPhoto);
+                            args.putString("category", target.category);
+                            args.putDouble("itemPrice", target.itemPrice);
+                            infoListFrag.setArguments(args);
+
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, infoListFrag)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                    }
+                    //guest
+                    Fragment infoListFrag = new InfoList();
+                    Bundle args = new Bundle();
+                    args.putString("itemName", target.itemName);
+                    args.putString("itemDetails", target.itemDetails);
+                    args.putString("itemPhoto", target.itemPhoto);
+                    args.putString("category", target.category);
+                    args.putDouble("itemPrice", target.itemPrice);
+                    infoListFrag.setArguments(args);
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, infoListFrag)
+                            .addToBackStack(null)
+                            .commit();
+
                 }
             });
             //---------------------LVClickHandle------------------------

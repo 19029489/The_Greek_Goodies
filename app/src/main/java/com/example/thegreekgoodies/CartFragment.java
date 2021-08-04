@@ -49,8 +49,12 @@ public class CartFragment extends Fragment {
         dbh.close();
         //-------------------------IfListEmptyHandle------------------------
         if (newCus.size() < 1){
-            Intent intent = new Intent(getActivity(), CartEmpty.class);
-            startActivity(intent);
+            Fragment cartEmptyFrag = new CartEmpty();
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, cartEmptyFrag)
+                    .addToBackStack(null)
+                    .commit();
         }
         else {
             aa = new SummarylistAdapter(getActivity(), R.layout.summarylist, newCus);
@@ -76,9 +80,15 @@ public class CartFragment extends Fragment {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), Checkout.class);
-                i.putExtra("totalprice", String.valueOf(finalTotalPrice));
-                startActivity(i);
+                Fragment checkoutFrag = new Checkout();
+                Bundle args = new Bundle();
+                args.putString("totalprice", String.valueOf(finalTotalPrice));
+                checkoutFrag.setArguments(args);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, checkoutFrag)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         //==============================BtnCheckOutHandle=========================

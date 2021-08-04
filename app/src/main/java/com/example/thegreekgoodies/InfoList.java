@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.Serializable;
+
 public class InfoList extends Fragment {
 
     ImageView imageView;
@@ -27,7 +29,7 @@ public class InfoList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View v =  inflater.inflate(R.layout.fragment_info_list, container, false);
 
         //===================Casting=====================
@@ -43,89 +45,100 @@ public class InfoList extends Fragment {
         priceDesc = v.findViewById(R.id.ItemPriceDescription);
         //===================Casting=====================
 
-        //------------------GetIntentData---------------------
-        Item itemData;
-        Intent i = getActivity().getIntent();
-        itemData = (Item) i.getSerializableExtra("positionData");
-        //------------------GetIntentData---------------------
+        //------------------GetArgsData---------------------
 
-        //------------------UISetup-------------
-        quantityNumber.setText(String.valueOf(quantity));
-        Glide.with(this).load(itemData.getItemPhoto()).into(imageView);
-        itemName.setText(itemData.getItemName());
-        itemDetails.setText(itemData.getItemDetails());
-        itemPrice.setText(String.format("%.2f", itemData.getItemPrice()));
-        pricePerPack.setText("Price per pack: " + String.format("$%.2f",itemData.getItemPrice()));
-        //------------------UISetup-------------
 
-        //==========================PlusButton============================
-        plusQuantity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double basePrice = itemData.itemPrice;
-                quantity++;
-                displayQuantity();
-                double ItemPrice = basePrice * quantity;
-                String setNewPrice = String.format("%.2f",ItemPrice);
-                itemPrice.setText(setNewPrice);
-            }
-        });
-        //==========================PlusButton============================
-        //==========================MinusButton============================
-        minusQuantity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double basePrice = itemData.itemPrice;
-                if (quantity < 1) {
-                    Toast.makeText(getActivity(), "Cant decrease quantity < 0", Toast.LENGTH_SHORT).show();
-                } else {
-                    quantity--;
+        if (getArguments() != null) {
+            String item_name = getArguments().getString("itemName");
+            String item_details = getArguments().getString("itemDetails");
+            String item_photo = getArguments().getString("itemPhoto");
+            String category = getArguments().getString("category");
+            Double item_price = getArguments().getDouble("itemPrice");
+
+            //------------------GetIntentData---------------------
+
+            //------------------UISetup-------------
+            quantityNumber.setText(String.valueOf(quantity));
+            Glide.with(this).load(item_photo).into(imageView);
+            itemName.setText(item_name);
+            itemDetails.setText(item_details);
+            itemPrice.setText(String.format("%.2f", item_price));
+            pricePerPack.setText("Price per pack: " + String.format("$%.2f", item_price));
+            //------------------UISetup-------------
+
+            //==========================PlusButton============================
+            plusQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    double basePrice = item_price;
+                    quantity++;
                     displayQuantity();
                     double ItemPrice = basePrice * quantity;
-                    String setNewPrice = String.format("%.2f",ItemPrice);
+                    String setNewPrice = String.format("%.2f", ItemPrice);
                     itemPrice.setText(setNewPrice);
                 }
-            }
-        });
-        //==========================MinusButton============================
-
-        //===========================AddToCartTempDataBase=============================
-        addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println(itemPrice);
-                //------------------AddCusDataBase-------------------
-                //------------------DataToBeAdded--------------------
-                String pname = itemName.getText().toString();
-                int quantity = Integer.parseInt(quantityNumber.getText().toString());
-                double price = Double.parseDouble(itemPrice.getText().toString());
-                //------------------DataToBeAdded--------------------
-                if (quantity >= 1) {
-                    DBCusOrderTemp dbc = new DBCusOrderTemp(getActivity());
-                    long inserted_id = dbc.insertCustomer(pname, quantity, price);
-                    dbc.close();
-                    //------------------AddCusDataBase-------------------
-                    Intent intent = new Intent(getActivity(), Summarylist.class);
-                    startActivity(intent);
-                    if (inserted_id != -1) {
-                        Toast.makeText(getActivity(), "Success adding to Cart",
-                                Toast.LENGTH_SHORT).show();
+            });
+            //==========================PlusButton============================
+            //==========================MinusButton============================
+            minusQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    double basePrice = item_price;
+                    if (quantity < 1) {
+                        Toast.makeText(getActivity(), "Cant decrease quantity < 0", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), "Failed to add to Cart",
-                                Toast.LENGTH_SHORT).show();
+                        quantity--;
+                        displayQuantity();
+                        double ItemPrice = basePrice * quantity;
+                        String setNewPrice = String.format("%.2f", ItemPrice);
+                        itemPrice.setText(setNewPrice);
                     }
                 }
-                //===========================CatchPreventAdd0===================
-                else {
-                    Toast.makeText(getActivity(), "Quantity cannot be 0",
-                            Toast.LENGTH_SHORT).show();
+            });
+            //==========================MinusButton============================
+
+            //===========================AddToCartTempDataBase=============================
+            addToCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(itemPrice);
+                    //------------------AddCusDataBase-------------------
+                    //------------------DataToBeAdded--------------------
+                    String pname = itemName.getText().toString();
+                    int quantity = Integer.parseInt(quantityNumber.getText().toString());
+                    double price = Double.parseDouble(itemPrice.getText().toString());
+                    //------------------DataToBeAdded--------------------
+                    if (quantity >= 1) {
+                        DBCusOrderTemp dbc = new DBCusOrderTemp(getActivity());
+                        long inserted_id = dbc.insertCustomer(pname, quantity, price);
+                        dbc.close();
+                        //------------------AddCusDataBase-------------------
+                        Fragment summarylistFrag = new Summarylist();
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.content_frame, summarylistFrag)
+                                .addToBackStack(null)
+                                .commit();
+
+                        if (inserted_id != -1) {
+                            Toast.makeText(getActivity(), "Success adding to Cart",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Failed to add to Cart",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    //===========================CatchPreventAdd0===================
+                    else {
+                        Toast.makeText(getActivity(), "Quantity cannot be 0",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    //===========================CatchPreventAdd0===================
                 }
-                //===========================CatchPreventAdd0===================
-            }
-        });
-        //===========================AddToCartTempDataBase=============================
+            });
+            //===========================AddToCartTempDataBase=============================
 
-
+        }
         return v;
     }
 
