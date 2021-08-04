@@ -178,6 +178,8 @@ public class AddAddressFragment extends Fragment {
         params.add("postal", postal);
         params.add("phone", phone);
         params.add("default", isDefault);
+        params.add("upnews", "No");
+        params.add("upcontact", phone);
 
         //for real devices, use the current location's ip address
         client.post("http://10.0.2.2/TheGreekGoodies/addAddress.php", params, new JsonHttpResponseHandler() {

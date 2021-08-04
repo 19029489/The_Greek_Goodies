@@ -140,7 +140,7 @@ public class SignInFragment extends Fragment {
         params.add("password", etPassword.getText().toString());
 
         //for real devices, use the current location's ip address
-        client.post("http://192.168.2.167/TheGreekGoodies/doLogin.php", params, new JsonHttpResponseHandler() {
+        client.post("http://10.0.2.2/TheGreekGoodies/doLogin.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
