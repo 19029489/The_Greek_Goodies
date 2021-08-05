@@ -36,11 +36,6 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProductsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProductsFragment extends Fragment {
 
     private AsyncHttpClient client;
@@ -55,46 +50,6 @@ public class ProductsFragment extends Fragment {
     ArrayList<Item> list;
     //===================UpdatesRaph======================
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ProductsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProductsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProductsFragment newInstance(String param1, String param2) {
-        ProductsFragment fragment = new ProductsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,24 +59,20 @@ public class ProductsFragment extends Fragment {
         tvCat = v.findViewById(R.id.tvCategory);
         tvDesc = v.findViewById(R.id.tvDescription);
 
-        //=====================ImplementationRaph========================
         //=================SetupUI/ETC=====================
         lv = v.findViewById(R.id.lvItems);
         list = new ArrayList<Item>();
         adapter = new ItemAdapter(getActivity(), R.layout.itemlist, list);
         lv.setAdapter(adapter);
-
         client = new AsyncHttpClient();
+        //=================SetupUI/ETC=====================
 
         if (getArguments() != null) {
-
             collection = getArguments().getString("collection_id");
             product_type = getArguments().getString("product_type");
-
             client.get("https://d10489d24d3e88405b3f523453ff2dca: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@superfoursixty-co.myshopify.com/admin/api/2021-04/collections/" + collection + ".json", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
                     try {
                         Log.i("JSON Results: ", response.toString());
 
@@ -175,14 +126,11 @@ public class ProductsFragment extends Fragment {
                                         }
                                         adapter.notifyDataSetChanged();
                                     }
-
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
                             }//end onSuccess
                         });
-
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -190,6 +138,10 @@ public class ProductsFragment extends Fragment {
 
                 }//end onSuccess
             });
+
+
+
+
 
             //=================ListView=====================
             //---------------------LVClickHandle------------------------
@@ -199,11 +151,15 @@ public class ProductsFragment extends Fragment {
 
                     Item target = list.get(position);
 
+                    //==================SharedPref==================
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     String role = prefs.getString("role", "");
                     String apikey = prefs.getString("apikey", "");
                     String userId = prefs.getString("userId", "");
+                    //==================SharedPref==================
 
+
+                    //==================Admin==================
                     if (!(role.equalsIgnoreCase("") || apikey.equalsIgnoreCase("") || userId.equalsIgnoreCase(""))) {
                         if (role.equalsIgnoreCase("admin")) {
                             Fragment infoListFrag = new InfoList();
@@ -221,7 +177,10 @@ public class ProductsFragment extends Fragment {
                                     .commit();
                         }
                     }
-                    //guest
+                    //==================Admin==================
+
+
+                    //==================Guest==================
                     Fragment infoListFrag = new InfoList();
                     Bundle args = new Bundle();
                     args.putString("itemName", target.itemName);
@@ -235,22 +194,13 @@ public class ProductsFragment extends Fragment {
                             .replace(R.id.content_frame, infoListFrag)
                             .addToBackStack(null)
                             .commit();
+                    //==================SharedPref==================
 
                 }
             });
+
             //---------------------LVClickHandle------------------------
-            //=====================ImplementationRaph========================
-
         }
-
-//        //=================SetupUI/ETC=====================
-//        //==================SharedPref==================
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        String catID = prefs.getString("catID", "");
-//        RequestParams params = new RequestParams();
-//        params.add("categoryId", catID);
-//        //==================SharedPref==================
-
         return v;
     }
 

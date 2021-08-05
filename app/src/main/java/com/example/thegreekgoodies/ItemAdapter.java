@@ -16,7 +16,7 @@ public class ItemAdapter extends ArrayAdapter<Item> {
     Context context;
     ArrayList<Item> items;
     int resource;
-    TextView tvName, tvBlank, tvPrice;
+    TextView tvName, tvPrice;
     ImageView ivImage;
 
     public ItemAdapter(Context context, int resource, ArrayList<Item> items) {
@@ -35,7 +35,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         //-----------------Casting------------------
         tvName = rowView.findViewById(R.id.itemName);
-        tvBlank = rowView.findViewById(R.id.blankSpace);
         tvPrice = rowView.findViewById(R.id.price);
         ivImage = rowView.findViewById(R.id.itemImage);
         //-----------------Casting------------------
@@ -50,7 +49,6 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         //-------------------Setup-----------------
         tvName.setText(name);
-        tvBlank.setText("-----------------------------------------");
         tvPrice.setText(String.format("$%.2f", price));
         Glide.with(context).load(photo).into(ivImage);
         //-------------------Setup-----------------

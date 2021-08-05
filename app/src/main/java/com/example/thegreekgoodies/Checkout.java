@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 public class Checkout extends Fragment {
 
-    TextView tvSTotal, tvShipping, tvTotal, tvBtnLogin, tvReturnBtn ;
+    TextView tvSTotal, tvShipping, tvTotal, tvReturnBtn, tvLoginBtn ;
     EditText etEmailPhone, etFirstName, etLastName, etAddress, etApartment, etCity, etCountry, etPostalCode, etPhoneNumber;
     Button btnContinue;
     CheckBox cbOffer;
@@ -37,7 +37,6 @@ public class Checkout extends Fragment {
             tvSTotal = v.findViewById(R.id.tvSubtotal);
             tvShipping = v.findViewById(R.id.tvShipping);
             tvTotal = v.findViewById(R.id.tvTotal);
-            tvBtnLogin = v.findViewById(R.id.tvLoginBtn);
             tvReturnBtn = v.findViewById(R.id.tvReturnBtn);
 
             //----------------------EditText------------------
@@ -54,31 +53,26 @@ public class Checkout extends Fragment {
             //----------------------Button/CheckBox------------------
             cbOffer = v.findViewById(R.id.cbOffer);
             btnContinue = v.findViewById(R.id.btnContinue);
+            tvLoginBtn = v.findViewById(R.id.tvLoginBtn);
             //==================MatchingGame==========================
 
             //=====================Setup==========================
             tvSTotal.setText(String.format("$%.2f", Double.parseDouble(TotalPrice)));
             double total = Double.valueOf(TotalPrice) + 1.8;
             tvTotal.setText(String.format("$%.2f", total));
+            btnContinue.setText("CONTINUE");
+            checkSharedPref();
             //=====================Setup==========================
 
             //---------------------------------SharedPref-------------------------------------------
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("totalprices", String.valueOf(total));
+
             editor.commit();
             //---------------------------------SharedPref-------------------------------------------
 
 
-            //----------------------LoginTVTextHandle----------------------
-//        tvBtnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Checkout.this, Login.class);
-//                startActivity(intent);
-//            }
-//        });
-            //----------------------LoginTVTextHandle----------------------
 
             //----------------------ReturnCartHandle----------------------
             tvReturnBtn.setOnClickListener(new View.OnClickListener() {
@@ -124,14 +118,24 @@ public class Checkout extends Fragment {
                         editor.commit();
                         //------------------------ThrowAllInEditor-------------------------------
 
-//                        Fragment signInFrag = new SignInFragment();
-//
-//                        getActivity().getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.content_frame, signInFrag)
-//                                .addToBackStack(null)
-//                                .commit();
-                    }
+                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        String apikey = pref.getString("apikey", "");
 
+                        if(apikey != null) {
+                            Fragment pap = new PaymentGateway();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, pap)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                        else{
+                            Fragment signInFrag = new SignInFragment();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, signInFrag)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                    }
                 }
             });
             //----------------------ContinueButton----------------------
@@ -167,6 +171,42 @@ public class Checkout extends Fragment {
         }
         else {
             return true;
+        }
+    }
+
+    private void checkSharedPref(){
+        //------------------------GetSharedPrefData----------------------------
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String newsContact = prefs.getString("newsContact", "");
+        String firstName = prefs.getString("firstName", "");
+        String lastName = prefs.getString("lastName", "");
+        String address = prefs.getString("address", "");
+        String apartment = prefs.getString("apartment", "");
+        String city = prefs.getString("city", "");
+        String country = prefs.getString("country", "");
+        String postal = prefs.getString("postal", "");
+        String number = prefs.getString("number", "");
+        String cbCheck = prefs.getString("cbCheck", "");
+        //------------------------GetSharedPrefData----------------------------
+
+        if (newsContact!=null && firstName!=null && lastName!=null && address!=null && apartment!=null && city!=null && country!=null && postal!=null &&
+                number!=null && cbCheck!=null){
+            etEmailPhone.setText(newsContact);
+            etAddress.setText(address);
+            etApartment.setText(apartment);
+            etCity.setText(city);
+            etCountry.setText(country);
+            etFirstName.setText(firstName);
+            etLastName.setText(lastName);
+            etPhoneNumber.setText(number);
+            etPostalCode.setText(postal);
+
+            if (cbCheck == "Yes"){
+                cbOffer.setChecked(true);
+            }
+            else if (cbCheck == "No"){
+                cbOffer.setChecked(false);
+            }
         }
     }
     //==========================Constructor=========================
