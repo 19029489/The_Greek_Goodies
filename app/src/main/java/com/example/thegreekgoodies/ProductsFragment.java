@@ -133,7 +133,17 @@ public class ProductsFragment extends Fragment {
                             tvDesc.setText(desc);
                         }
 
-                        String catName = response.getJSONObject("collection").getJSONArray("rules").getJSONObject(0).getString("condition");
+                        String catName;
+
+                        if (cat.equalsIgnoreCase("Kinda Cheesy")){
+                            catName = "Cheese";
+                        } else if (cat.equalsIgnoreCase("Oil of live, Oil of Olive")) {
+                            catName = "Olive Oil";
+                        } else if (cat.equalsIgnoreCase("Yoghurt for you")){
+                            catName = "Yogurt";
+                        } else {
+                            catName = response.getJSONObject("collection").getJSONArray("rules").getJSONObject(0).getString("condition");
+                        }
 
                         //Get Products
                         client.get("https://d10489d24d3e88405b3f523453ff2dca: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@superfoursixty-co.myshopify.com/admin/api/2021-04/products.json", new JsonHttpResponseHandler() {

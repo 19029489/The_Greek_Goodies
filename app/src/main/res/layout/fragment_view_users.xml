@@ -27,13 +27,30 @@
         android:background="@color/black"
         android:orientation="horizontal" />
 
-    <Spinner
-        android:id="@+id/spinner"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:entries="@array/users"
-        android:background="@drawable/rounded"/>
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded"
+            android:entries="@array/users" />
+
+        <Button
+            android:id="@+id/btnAddUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/gothicb"
+            android:layout_marginLeft="210dp"
+            android:text="Add" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lvChoose"
