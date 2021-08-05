@@ -42,12 +42,14 @@ public class Summarylist extends Fragment {
         tvSubText.setText("Subtotal");
         //==================Setup==========================
 
+
         //-------------------DBSetupArray-------------------
         DBCusOrderTemp dbh = new DBCusOrderTemp(getActivity());
         newCus = new ArrayList<CustomerOrder>();
         newCus.clear();
         newCus.addAll(dbh.getCustomerData());
         dbh.close();
+
         //-------------------------IfListEmptyHandle------------------------
         if (newCus.size() < 1){
             Fragment cartEmptyFrag = new CartEmpty();
@@ -98,8 +100,12 @@ public class Summarylist extends Fragment {
         btnAddMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
+
+                Fragment mainMenu = new HomeFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, mainMenu)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         //==============================BtnAddMore=========================

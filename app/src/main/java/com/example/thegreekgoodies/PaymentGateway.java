@@ -41,10 +41,10 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_payment_gateway, container, false);
-        com.razorpay.Checkout.preload(getContext());
+        Checkout.preload(getContext());
         client = new AsyncHttpClient();
-
         tvSet = v.findViewById(R.id.tvSet);
+
         checkout();
 
 
@@ -61,10 +61,11 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
         a = a * 100;
         //------------------------GetSharedPrefData----------------------------
 
-        com.razorpay.Checkout checkout = new com.razorpay.Checkout();
+        Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_dJMePFpITDSfJY");
         checkout.setImage(R.drawable.ic_launcher_foreground);
         final Activity activity = getActivity();
+
         try {
             JSONObject options = new JSONObject();
             options.put("name", "The Greek Goodies");
@@ -75,7 +76,12 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
             options.put("currency", "SGD");
             options.put("amount", String.valueOf(a));//300 X 100
             checkout.open(activity, options);
-        } catch (Exception e) {
+
+            System.out.println("===========================");
+            System.out.println("WonderFul");
+            System.out.println("===========================");
+        }
+        catch (Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
         }
     }
@@ -142,8 +148,12 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
                 //Wipe listView clean
                 //-----------------------------RemoveAllItemsOnceDone--------------------------
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                Fragment home = new HomeFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, home)
+                        .addToBackStack(null)
+                        .commit();
+
                 Toast.makeText(getActivity(), "Payment Successful. Thank you for purchasing with us.",
                         Toast.LENGTH_LONG).show();
             }
@@ -151,14 +161,18 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
         //==============================HandleDetailsAdd=============================
     }
 
+
     @Override
     public void onPaymentError(int i, String s) {
         Toast.makeText(getActivity(), "Payment Unsuccessful. Please try again.",
                 Toast.LENGTH_LONG).show();
 
         tvSet.setText(s);
-        Intent intent = new Intent(getActivity(), Checkout.class);
-        startActivity(intent);
+        Fragment ret = new com.example.thegreekgoodies.Checkout();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, ret)
+                .addToBackStack(null)
+                .commit();
     }
     //================================HandleEvent==============================
 

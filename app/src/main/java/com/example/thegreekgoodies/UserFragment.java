@@ -85,7 +85,7 @@ public class UserFragment extends Fragment {
                     selectedFragment = new CatalogFragment();
                     break;
                 case R.id.nav_cart:
-                    selectedFragment = new CartFragment();
+                    selectedFragment = new Summarylist();
                     break;
                 case R.id.nav_account:
                     selectedFragment = new AccountFragment();
