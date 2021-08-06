@@ -61,6 +61,10 @@ public class Checkout extends Fragment {
             double total = Double.valueOf(TotalPrice) + 1.8;
             tvTotal.setText(String.format("$%.2f", total));
             btnContinue.setText("CONTINUE");
+            etCountry.setText("Singapore");
+            etCity.setText("Singapore");
+//            etCountry.setFocusable(false);
+//            etCity.setFocusable(false);
             checkSharedPref();
             //=====================Setup==========================
 
@@ -93,7 +97,7 @@ public class Checkout extends Fragment {
                     if (checkEntry() == false) {
                         Toast.makeText(getActivity(), "Certain fills cannot be empty",
                                 Toast.LENGTH_LONG).show();
-                    } else {
+                    } else if (checkEntry() == true) {
                         //---------------------------------SharedPref-------------------------------------------
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = prefs.edit();
@@ -158,12 +162,12 @@ public class Checkout extends Fragment {
 
     private boolean checkEntry(){
         String ep = etEmailPhone.getText().toString();
-        String ln = etEmailPhone.getText().toString();
-        String ad = etEmailPhone.getText().toString();
-        String ct = etEmailPhone.getText().toString();
-        String c = etEmailPhone.getText().toString();
-        String pc = etEmailPhone.getText().toString();
-        String pn = etEmailPhone.getText().toString();
+        String ln = etLastName.getText().toString();
+        String ad = etAddress.getText().toString();
+        String ct = etCity.getText().toString();
+        String c = etCountry.getText().toString();
+        String pc = etPostalCode.getText().toString();
+        String pn = etPhoneNumber.getText().toString();
 
         if (ep.isEmpty() || ln.isEmpty() || ad.isEmpty() || ct.isEmpty() || c.isEmpty() || pc.isEmpty() || pn.isEmpty()){
             return false;
@@ -188,6 +192,8 @@ public class Checkout extends Fragment {
         String cbCheck = prefs.getString("cbCheck", "");
         //------------------------GetSharedPrefData----------------------------
 
+
+        //-------------------------------------------------------AutoFillData--------------------------------------------------------
         if (newsContact!=null && firstName!=null && lastName!=null && address!=null && apartment!=null && city!=null && country!=null && postal!=null &&
                 number!=null && cbCheck!=null){
             etEmailPhone.setText(newsContact);
@@ -207,6 +213,8 @@ public class Checkout extends Fragment {
                 cbOffer.setChecked(false);
             }
         }
+        //-------------------------------------------------------AutoFillData--------------------------------------------------------
+
     }
     //==========================Constructor=========================
 

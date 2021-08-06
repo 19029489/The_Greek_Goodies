@@ -204,7 +204,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="City"
-                        android:inputType="textPersonName"/>
+                        android:inputType="textPersonName"
+                        android:text="Singapore" />
 
                     <EditText
                         android:id="@+id/etCountry"
@@ -212,7 +213,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="Country/Region"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:text="Singapore" />
 
                     <EditText
                         android:id="@+id/etPostalCode"
@@ -237,7 +239,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:text="Continue"
+                        android:text="CONTINUE"
                         app:backgroundTint="#090000" />
 
                     <TextView

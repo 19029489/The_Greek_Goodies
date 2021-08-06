@@ -70,7 +70,6 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
             options.put("name", "The Greek Goodies");
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
 
-            // options.put("order_id", "order_DBJOWzybf0sJbb");//from response of step 3.
             options.put("theme.color", "#000000");
             options.put("currency", "SGD");
             options.put("amount", String.format("%.2f",capture));//300 X 100
@@ -87,6 +86,14 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
     //================================HandleEvent==============================
     @Override
     public void onPaymentSuccess(String s) {
+        //------------------------SpecialPref----------------------------
+        SharedPreferences specialPref = PreferenceManager.getDefaultSharedPreferences(PaymentGateway.this);
+        SharedPreferences.Editor editor = specialPref.edit();
+        editor.putString("setMeal", String.valueOf(1));
+        editor.commit();
+        //------------------------SpecialPref----------------------------
+
+
         //------------------------GetSharedPrefData----------------------------
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String newsContact = prefs.getString("newsContact", "");
@@ -100,9 +107,11 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
         String number = prefs.getString("number", "");
         String userId = prefs.getString("userId", "");
         String cbCheck = prefs.getString("cbCheck", "");
+        String setMeal = prefs.getString("setMeal", "");
         //------------------------GetSharedPrefData----------------------------
 
         //==============================HandleCusOrderAdd=============================
+
         DBCusOrderTemp db = new DBCusOrderTemp(getApplicationContext());
         for (int i = 0; i < db.getCustomerData().size(); i++) {
             String name = db.getCustomerData().get(i).itemName;
@@ -113,14 +122,23 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
             params.add("productname", name);
             params.add("quantity", quantity);
             params.add("totalprice", price);
+            params.add("set", setMeal);
 
 
-            client.post("http://10.0.2.2/greek_goodies/addCusOrder.php", params, new JsonHttpResponseHandler() {
+            System.out.println("==========================");
+            System.out.println(params);
+            System.out.println("==========================");
+            client.post("http://10.0.2.2/TheGreekGoodies/addCusOrder.php", params, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    System.out.println("==========================");
+                    System.out.println("Completed Item");
+                    System.out.println("==========================");
                     db.close();
                 }
             });
         }
+
+        setMeal = String.valueOf(Integer.parseInt(setMeal) + 1);
         //==============================HandleCusOrderAdd=============================
 
 
@@ -129,30 +147,33 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
         paramsB.add("userid", userId);
         paramsB.add("firstname", firstName);
         paramsB.add("lastname", lastName);
-        paramsB.add("address", address);
-        paramsB.add("apartment", apartment);
+        paramsB.add("add1", address);
+        paramsB.add("add2", apartment);
         paramsB.add("city", city);
         paramsB.add("country", country);
         paramsB.add("postal", postal);
         paramsB.add("phonenum", number);
         paramsB.add("upnews", cbCheck);
+        paramsB.add("default", String.valueOf(0));
         paramsB.add("upcontact", newsContact);
 
 
-
-        client.post("http://10.0.2.2/greek_goodies/addCusInfo.php", paramsB, new JsonHttpResponseHandler() {
+        System.out.println("==========================");
+        System.out.println(paramsB);
+        System.out.println("==========================");
+        client.post("http://10.0.2.2/TheGreekGoodies/addAddress.php", paramsB, new JsonHttpResponseHandler() {
 
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 //-----------------------------RemoveAllItemsOnceDone--------------------------
                 //Clear SQLite false Database
                 //Wipe listView clean
                 //-----------------------------RemoveAllItemsOnceDone--------------------------
+                System.out.println("==========================");
+                System.out.println("Completed Address");
+                System.out.println("==========================");
 
-                Fragment home = new HomeFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame_main, home)
-                        .addToBackStack(null)
-                        .commit();
+                Intent intent = new Intent(PaymentGateway.this, MainActivity.class);
+                startActivity(intent);
 
                 Toast.makeText(PaymentGateway.this, "Payment Successful. Thank you for purchasing with us.",
                         Toast.LENGTH_LONG).show();
