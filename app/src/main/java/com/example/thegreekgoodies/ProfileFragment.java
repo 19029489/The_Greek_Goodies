@@ -101,6 +101,7 @@ public class ProfileFragment extends Fragment {
         btnLogOut = v.findViewById(R.id.btnLogOutUser);
         tvAddress = v.findViewById(R.id.tvAddress);
         tvViewAddresses = v.findViewById(R.id.tvViewAddresses);
+        tvOrderHistory = v.findViewById(R.id.tvOrderHistory);
 
         al = new ArrayList<Address>();
 
@@ -167,12 +168,81 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment viewAddressFrag = new ViewAddressesFragment();
-                Fragment userFrag = new UserFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_frame, viewAddressFrag)
                         .addToBackStack(null)
                         .commit();
             }
+        });
+
+        RequestParams params2 = new RequestParams();
+        params2.add("user_id", userId);
+        params2.add("apikey", apikey);
+
+        //for real devices, use the current location's ip address
+        client.post("http://192.168.2.167/TheGreekGoodies/getOrdersByUser.php", params2, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
+
+                try {
+                    Log.i("Orders: ", response.toString());
+
+                    int highestNum = 0;
+
+                    if (response.length() == 0) {
+                        tvOrderHistory.setText("View Orders (0)");
+                    } else {
+
+                        ArrayList<Orders> alOrders = new ArrayList<Orders>();
+
+                        for (int i = 0; i < response.length(); i++) {
+
+                            JSONObject jsonObj = response.getJSONObject(i);
+
+                            String orderId = jsonObj.getString("order_id");
+                            String userId = jsonObj.getString("user_id");
+                            String productName = jsonObj.getString("productname");
+                            int quantity = jsonObj.getInt("quantity");
+                            double totalprice = jsonObj.getDouble("totalprice");
+                            String status = jsonObj.getString("status");
+                            String rider = jsonObj.getString("rider");
+                            int set = jsonObj.getInt("set");
+
+                            Orders order = new Orders(orderId, userId, productName, quantity, totalprice, status, rider, set);
+
+                            alOrders.add(order);
+
+                            for (int o = 0; o < alOrders.size(); o++){
+                                if (alOrders.get(o).getSet() > highestNum){
+                                    highestNum = alOrders.get(o).getSet();
+                                }
+                            }
+                        }
+
+                        tvOrderHistory.setText("View Orders ("  + highestNum + ")");
+
+                        int finalHighestNum = highestNum;
+                        tvOrderHistory.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Fragment viewOrdersFrag = new UserViewOrdersFragment();
+                                Bundle args = new Bundle();
+                                args.putInt("totalNum", finalHighestNum);
+                                viewOrdersFrag.setArguments(args);
+                                getActivity().getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.content_frame, viewOrdersFrag)
+                                        .addToBackStack(null)
+                                        .commit();
+                            }
+                        });
+                    }
+
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+            }//end onSuccess
         });
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
