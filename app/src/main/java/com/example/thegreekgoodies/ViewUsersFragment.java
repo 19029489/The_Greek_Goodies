@@ -130,13 +130,16 @@ public class ViewUsersFragment extends Fragment {
 
                 if (spn.getSelectedItem().toString().equalsIgnoreCase("users")) {
                     chosen = "user";
-                    btnAdd.setActivated(false);
+                    btnAdd.setEnabled(false);
+                    btnAdd.setVisibility(View.GONE);
                 } else if (spn.getSelectedItem().toString().equalsIgnoreCase("admins")) {
                     chosen = "admin";
-                    btnAdd.setActivated(true);
+                    btnAdd.setEnabled(true);
+                    btnAdd.setVisibility(View.VISIBLE);
                 } else {
                     chosen = "rider";
-                    btnAdd.setActivated(true);
+                    btnAdd.setEnabled(true);
+                    btnAdd.setVisibility(View.VISIBLE);
                 }
 
                 btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +168,7 @@ public class ViewUsersFragment extends Fragment {
                 params.add("apikey", apikey);
                 params.add("role", chosen);
                 //for real devices, use the current location's ip address
-                client.post("http://192.168.2.167/TheGreekGoodies/getAllUsers.php", params, new JsonHttpResponseHandler() {
+                client.post("http://10.0.2.2/TheGreekGoodies/getAllUsers.php", params, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
 

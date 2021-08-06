@@ -109,6 +109,13 @@ public class UserViewOrdersFragment extends Fragment {
         aa = new OrderAdapter(getActivity(), R.layout.orderlist_row, al);
         lv.setAdapter(aa);
 
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         client = new AsyncHttpClient();
 
         if (getArguments() != null) {
@@ -118,7 +125,7 @@ public class UserViewOrdersFragment extends Fragment {
             params.add("user_id", userId);
             params.add("apikey", apikey);
 
-            client.post("http://192.168.2.167/TheGreekGoodies/getOrdersByUser.php", params, new JsonHttpResponseHandler() {
+            client.post("http://10.0.2.2/TheGreekGoodies/getOrdersByUser.php", params, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
 
@@ -144,22 +151,20 @@ public class UserViewOrdersFragment extends Fragment {
 
                             alOrders.add(order);
 
-                            //Get specific sets
-                            ArrayList<Orders> alSet = new ArrayList<Orders>();
-
-                            for (int u = 0; u < totalNum; u++){
-                                for (int o = 0; o < alOrders.size(); o++){
-                                    if (alOrders.get(o).getSet() == u) {
-                                        alSet.add(alOrders.get(o));
-                                    }
-                                }
-
-                                Log.i("alSet12345", "" + alSet);
-                                //Add to Main Arraylist to be displayed
-                                al.add(alSet);
-                            }
-                            aa.notifyDataSetChanged();
                         }
+
+                        //Get specific sets
+                        for (int u = 0; u < totalNum; u++) {
+                            ArrayList<Orders> alSet = new ArrayList<Orders>();
+                            for (int o = 0; o < alOrders.size(); o++) {
+                                if (alOrders.get(o).getSet() == u+1) {
+                                    alSet.add(alOrders.get(o));
+                                }
+                            }
+                            al.add(alSet);
+                        }
+                        aa.notifyDataSetChanged();
+
                     }
                     catch (JSONException e){
                         e.printStackTrace();

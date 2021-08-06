@@ -140,6 +140,7 @@
                     android:layout_marginRight="30dp"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/gothicb"
+                    android:textColor="@color/white"
                     android:text="CREATE" />
 
                 <Button
@@ -148,6 +149,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/black"
                     android:fontFamily="@font/gothicb"
+                    android:textColor="@color/white"
                     android:text="Cancel" />
             </LinearLayout>
 

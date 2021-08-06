@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     Button btnLogOut;
-    TextView tvOrderHistory, tvAddress, tvViewAddresses;
+    TextView tvOrderHistory, tvAddress, tvViewAddresses, tvGo;
     private ArrayList<Address> al;
     private AsyncHttpClient client;
 
@@ -102,6 +102,18 @@ public class ProfileFragment extends Fragment {
         tvAddress = v.findViewById(R.id.tvAddress);
         tvViewAddresses = v.findViewById(R.id.tvViewAddresses);
         tvOrderHistory = v.findViewById(R.id.tvOrderHistory);
+        tvGo = v.findViewById(R.id.tvGoEnquiry);
+
+        tvGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment adminHelpFrag = new AdminHelpFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, adminHelpFrag)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         al = new ArrayList<Address>();
 
@@ -180,7 +192,7 @@ public class ProfileFragment extends Fragment {
         params2.add("apikey", apikey);
 
         //for real devices, use the current location's ip address
-        client.post("http://192.168.2.167/TheGreekGoodies/getOrdersByUser.php", params2, new JsonHttpResponseHandler() {
+        client.post("http://10.0.2.2/TheGreekGoodies/getOrdersByUser.php", params2, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray response) {
 

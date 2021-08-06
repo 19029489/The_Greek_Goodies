@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ public class OrderAdapter extends ArrayAdapter<ArrayList<Orders>> {
 
     private LinearLayout llOrder;
 
-    private TextView tvTotalPrice;
+    private TextView tvTotalPrice, tvOrderNum;
 
     public OrderAdapter(Context context, int resource, ArrayList<ArrayList<Orders>> objects){
         super(context, resource, objects);
@@ -41,6 +42,8 @@ public class OrderAdapter extends ArrayAdapter<ArrayList<Orders>> {
         View rowView = inflater.inflate(R.layout.orderlist_row, parent, false);
 
         tvTotalPrice = (TextView) rowView.findViewById(R.id.tvTotalPrice);
+        tvOrderNum = (TextView) rowView.findViewById(R.id.tvOrderNumberUser);
+
         llOrder = (LinearLayout) rowView.findViewById(R.id.llOrders);
 
         ArrayList<Orders> currentArrayList = alOrders.get(position);
@@ -91,6 +94,8 @@ public class OrderAdapter extends ArrayAdapter<ArrayList<Orders>> {
 
             total += currentArrayList.get(i).getTotalprice();
         }
+
+        tvOrderNum.setText("Order Id: " + currentArrayList.get(0).getSet());
 
         tvTotalPrice.setText("Total Price: $" + total);
 

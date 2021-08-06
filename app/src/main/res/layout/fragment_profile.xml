@@ -90,4 +90,16 @@
         android:fontFamily="@font/gothic"
         android:textColor="#a56800"/>
 
+    <TextView
+        android:id="@+id/tvGoEnquiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="15dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/gothic"
+        android:textColor="#a56800"
+        android:text="Send Enquiry"/>
+
 </LinearLayout>

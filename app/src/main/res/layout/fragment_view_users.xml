@@ -47,7 +47,8 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/black"
             android:fontFamily="@font/gothicb"
-            android:layout_marginLeft="210dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
             android:text="Add" />
 
     </LinearLayout>

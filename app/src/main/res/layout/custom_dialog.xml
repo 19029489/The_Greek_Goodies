@@ -1,49 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="80dp"
-    android:background="#3E80B4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txt_dia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="Are you sure you want to delete this address?"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:textStyle="bold"/>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#3E80B4"
-        android:orientation="horizontal" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_yes"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:background="@android:color/white"
-            android:clickable="true"
-            android:text="Yes"
-            android:textColor="#5DBCD2"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvAddress1Dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gothic"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="20dp"/>
 
-        <Button
-            android:id="@+id/btn_no"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:background="@android:color/white"
-            android:clickable="true"
-            android:text="No"
-            android:textColor="#5DBCD2"
-            android:textStyle="bold" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvAddress2Dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gothic"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="20dp"/>
 
+            <TextView
+                android:id="@+id/tvAssignOrderID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gothic"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lobster"
+                android:layout_marginTop="30dp"
+                android:text="Drivers"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <LinearLayout
+                android:layout_width="40dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@color/black"
+                android:orientation="horizontal" />
+
+            <ListView
+                android:id="@+id/lvDrivers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"/>
+
+            <Button
+                android:id="@+id/btnAssign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/black"
+                android:textColor="@color/white"
+                android:text="Assign Driver" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
