@@ -101,8 +101,8 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
         String lastName = prefs.getString("lastName", "");
         String address = prefs.getString("address", "");
         String apartment = prefs.getString("apartment", "");
-        String city = prefs.getString("city", "");
-        String country = prefs.getString("country", "");
+//        String city = prefs.getString("city", "");
+//        String country = prefs.getString("country", "");
         String postal = prefs.getString("postal", "");
         String number = prefs.getString("number", "");
         String userId = prefs.getString("userId", "");
@@ -144,15 +144,13 @@ public class PaymentGateway extends AppCompatActivity implements PaymentResultLi
 
         //==============================HandleDetailsAdd=============================
         RequestParams paramsB = new RequestParams();
-        paramsB.add("userid", userId);
+        paramsB.add("user_id", userId);
         paramsB.add("firstname", firstName);
         paramsB.add("lastname", lastName);
         paramsB.add("add1", address);
         paramsB.add("add2", apartment);
-        paramsB.add("city", city);
-        paramsB.add("country", country);
         paramsB.add("postal", postal);
-        paramsB.add("phonenum", number);
+        paramsB.add("phone", number);
         paramsB.add("upnews", cbCheck);
         paramsB.add("default", String.valueOf(0));
         paramsB.add("upcontact", newsContact);
