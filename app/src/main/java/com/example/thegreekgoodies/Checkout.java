@@ -121,14 +121,13 @@ public class Checkout extends Fragment {
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
                         String apikey = pref.getString("apikey", "");
 
-                        if(apikey != null) {
-                            Fragment pap = new PaymentGateway();
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.content_frame, pap)
-                                    .addToBackStack(null)
-                                    .commit();
+
+                        if(apikey.isEmpty() == false) {
+                            Intent intent = new Intent(getActivity(), PaymentGateway.class);
+                            startActivity(intent);
                         }
-                        else{
+
+                        else if(apikey.isEmpty() == true){
                             Fragment signInFrag = new SignInFragment();
                             getActivity().getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.content_frame, signInFrag)

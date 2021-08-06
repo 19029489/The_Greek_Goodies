@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TheGreekGoodies">
+        <activity android:name=".PaymentGateway"></activity>
         <activity
             android:name=".LoadingScreenActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

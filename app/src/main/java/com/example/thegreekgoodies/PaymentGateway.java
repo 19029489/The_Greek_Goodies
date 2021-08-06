@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class PaymentGateway extends Fragment implements PaymentResultListener {
+public class PaymentGateway extends AppCompatActivity implements PaymentResultListener {
 
     TextView tvSet;
     private AsyncHttpClient client;
@@ -37,34 +38,32 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_payment_gateway, container, false);
-        Checkout.preload(getContext());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_payment_gateway);
+        Checkout.preload(getApplicationContext());
         client = new AsyncHttpClient();
-        tvSet = v.findViewById(R.id.tvSet);
+        tvSet = findViewById(R.id.tvSet);
 
         checkout();
 
 
-        return  v;
     }
 
 
     //====================================Function=========================================
     private void checkout() {
         //------------------------GetSharedPrefData----------------------------
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String totalPrice = prefs.getString("totalprices", "");
         double a = Double.valueOf(totalPrice);
-        a = a * 100;
+        double capture = a * 100;
         //------------------------GetSharedPrefData----------------------------
 
         Checkout checkout = new Checkout();
         checkout.setKeyID("rzp_test_dJMePFpITDSfJY");
         checkout.setImage(R.drawable.ic_launcher_foreground);
-        final Activity activity = getActivity();
+        final Activity activity = this;
 
         try {
             JSONObject options = new JSONObject();
@@ -74,12 +73,9 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
             // options.put("order_id", "order_DBJOWzybf0sJbb");//from response of step 3.
             options.put("theme.color", "#000000");
             options.put("currency", "SGD");
-            options.put("amount", String.valueOf(a));//300 X 100
+            options.put("amount", String.format("%.2f",capture));//300 X 100
             checkout.open(activity, options);
 
-            System.out.println("===========================");
-            System.out.println("WonderFul");
-            System.out.println("===========================");
         }
         catch (Exception e) {
             Log.e("TAG", "Error in starting Razorpay Checkout", e);
@@ -92,7 +88,7 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
     @Override
     public void onPaymentSuccess(String s) {
         //------------------------GetSharedPrefData----------------------------
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String newsContact = prefs.getString("newsContact", "");
         String firstName = prefs.getString("firstName", "");
         String lastName = prefs.getString("lastName", "");
@@ -107,7 +103,7 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
         //------------------------GetSharedPrefData----------------------------
 
         //==============================HandleCusOrderAdd=============================
-        DBCusOrderTemp db = new DBCusOrderTemp(getContext());
+        DBCusOrderTemp db = new DBCusOrderTemp(getApplicationContext());
         for (int i = 0; i < db.getCustomerData().size(); i++) {
             String name = db.getCustomerData().get(i).itemName;
             String price = String.valueOf(db.getCustomerData().get(i).itemPrice);
@@ -117,6 +113,8 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
             params.add("productname", name);
             params.add("quantity", quantity);
             params.add("totalprice", price);
+
+
             client.post("http://10.0.2.2/greek_goodies/addCusOrder.php", params, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     db.close();
@@ -140,6 +138,8 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
         paramsB.add("upnews", cbCheck);
         paramsB.add("upcontact", newsContact);
 
+
+
         client.post("http://10.0.2.2/greek_goodies/addCusInfo.php", paramsB, new JsonHttpResponseHandler() {
 
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -149,12 +149,12 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
                 //-----------------------------RemoveAllItemsOnceDone--------------------------
 
                 Fragment home = new HomeFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, home)
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame_main, home)
                         .addToBackStack(null)
                         .commit();
 
-                Toast.makeText(getActivity(), "Payment Successful. Thank you for purchasing with us.",
+                Toast.makeText(PaymentGateway.this, "Payment Successful. Thank you for purchasing with us.",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -164,17 +164,20 @@ public class PaymentGateway extends Fragment implements PaymentResultListener {
 
     @Override
     public void onPaymentError(int i, String s) {
-        Toast.makeText(getActivity(), "Payment Unsuccessful. Please try again.",
-                Toast.LENGTH_LONG).show();
-
         tvSet.setText(s);
-        Fragment ret = new com.example.thegreekgoodies.Checkout();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, ret)
+        Fragment home = new Summarylist();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame_main, home)
                 .addToBackStack(null)
                 .commit();
+
+        Toast.makeText(PaymentGateway.this, "Payment Unsuccessful. Please try again.",
+                Toast.LENGTH_LONG).show();
+
     }
     //================================HandleEvent==============================
+
+
 
 
 }
