@@ -1,9 +1,11 @@
 package com.example.thegreekgoodies;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -82,7 +84,23 @@ public class CreateAdminFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_create_admin, container, false);
 
-        etEmail = v.findViewById(R.id.etNewEmail);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String role = prefs.getString("role", "");
+        String apikey = prefs.getString("apikey", "");
+        String userId = prefs.getString("userId", "");
+
+        if (role.equalsIgnoreCase("") || apikey.equalsIgnoreCase("") || userId.equalsIgnoreCase("")) {
+            //guest
+            Fragment signInFrag = new SignInFragment();
+            Fragment userFrag = new UserFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, signInFrag)
+                    .replace(R.id.content_frame_main,userFrag)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+        etEmail = v.findViewById(R.id.etNewAdminEmail);
         etFirstName = v.findViewById(R.id.etNewAdminFirstName);
         etLastName = v.findViewById(R.id.etNewAdminLastName);
         etPassword = v.findViewById(R.id.etNewAdminPassword);
@@ -161,12 +179,20 @@ public class CreateAdminFragment extends Fragment {
 
     private void CreateAdmin(View v) {
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String role = prefs.getString("role", "");
+        String apikey = prefs.getString("apikey", "");
+        String userId = prefs.getString("userId", "");
+
+
         String firstname = etFirstName.getText().toString();
         String email = etEmail.getText().toString();
         String lastname = etLastName.getText().toString();
         String password = etPassword.getText().toString();
 
         RequestParams params = new RequestParams();
+        params.add("apikey", apikey);
+        params.add("user_id", userId);
         params.add("email", email);
         params.add("firstname", firstname);
         params.add("lastname", lastname);
